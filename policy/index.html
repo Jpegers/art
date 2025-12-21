@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="ru" data-theme="default">
+<head>
+  <meta charset="utf-8">
+  <title>Политика конфиденциальности — Jpegers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/css/colors.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/mobile.css">
+<meta name="robots" content="noindex,follow">
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      color-scheme: dark;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #000 100%);
+      color: #e5e7eb;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ===== HEADER (как на главной) ===== */
+
+    .policy-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      width: 100%;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      background: rgba(0, 0, 0, 0.22);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+
+      padding: 12px 0;
+    }
+
+    /* Контейнер */
+    .header-content {
+      max-width: 99%;
+      margin: 0 auto;
+      padding: 0 16px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Логотип */
+    .logo {
+      width: 96px;
+      height: auto;
+      cursor: pointer;
+      transition: opacity .15s ease;
+    }
+    .logo:hover {
+      opacity: .8;
+    }
+
+    /* Кнопка Телеграм */
+    .contact-link {
+      font-size: 15px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      color: #e5e7eb;
+      text-decoration: none;
+      font-weight: 500;
+
+      background: radial-gradient(circle at top left,
+          rgba(56,189,248,0.25), transparent 55%),
+        radial-gradient(circle at bottom right,
+          rgba(139,92,246,0.25), transparent 55%);
+
+      box-shadow: 0 0 12px rgba(56,189,248,.28),
+                  0 0 18px rgba(139,92,246,.25);
+
+      transition: background .15s, box-shadow .2s, transform .12s;
+    }
+
+    .contact-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 22px rgba(56,189,248,.45),
+                  0 0 30px rgba(139,92,246,.45);
+      background: radial-gradient(circle at top left,
+          rgba(56,189,248,.45), transparent 55%),
+        radial-gradient(circle at bottom right,
+          rgba(139,92,246,.45), transparent 55%);
+    }
+
+    /* ===== MOBILE адаптив ===== */
+
+    @media (max-width: 640px) {
+      .logo {
+        width: 72px;
+      }
+
+      .contact-link {
+        font-size: 12px;
+        padding: 8px 14px;
+      }
+    }
+
+    .page-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid rgba(148,163,184,0.3);
+      background: rgba(15,23,42,0.95);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .page-header__inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .page-header__logo {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: #f9fafb;
+    }
+
+    .page-header__tag {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      color: #e5e7eb;
+      background: radial-gradient(circle at top left,
+        rgba(56,189,248,0.18), transparent 60%);
+    }
+
+    main {
+      flex: 1;
+      padding: 32px 16px 40px;
+    }
+
+    .policy {
+      max-width: 960px;
+      margin: 0 auto;
+      background: rgba(15,23,42,0.96);
+      border-radius: 18px;
+      padding: 28px 20px 32px;
+      box-shadow:
+        0 22px 60px rgba(15,23,42,0.9),
+        0 0 0 1px rgba(15,23,42,0.9);
+    }
+
+    @media (min-width: 768px) {
+      .policy {
+        padding: 36px 32px 40px;
+      }
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0 0 18px;
+      color: #f9fafb;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin: 24px 0 10px;
+      color: #e5e7eb;
+    }
+
+    p {
+      margin: 0 0 10px;
+      line-height: 1.6;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    ul {
+      margin: 0 0 10px 18px;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    li + li {
+      margin-top: 4px;
+    }
+
+    a {
+      color: #38bdf8;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+
+    .policy__note {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-top: 18px;
+    }
+
+    .policy__section-number {
+      opacity: 0.7;
+      font-weight: 500;
+      margin-right: 4px;
+    }
+
+    .page-footer {
+      padding: 18px 16px 24px;
+      font-size: 12px;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    .page-footer__inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .page-footer a {
+      color: #9ca3af;
+      text-decoration: underline dotted;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header-blur">
+    <div class="header-content">
+      <a href="/" class="logo-link" id="logo-link" aria-label="Jpegers — Портфолио">
+        <img src="/assets/logo_jpegers.svg" alt="Jpegers" class="logo">
+      </a>
+      <nav class="topnav" aria-label="Навигация">
+        <a class="topnav__link" href="/">Портфолио</a>
+        <a class="topnav__link" href="/price">Прайс</a>
+        <a class="topnav__link" href="/contacts">Контакты</a>
+        <a class="topnav__link" href="/rita">Rita</a>
+      </nav>
+      <div class="header-right">
+        <a class="contact-link" href="https://t.me/jpegers" target="_blank" rel="noopener">Написать в Telegram</a>
+        <button class="burger" type="button" aria-label="Меню"><span></span></button>
+      </div>
+    </div>
+    <div class="mobile-menu">
+      <!-- Логотип в мобильном меню -->
+      <div class="mobile-logo">
+        <a href="/" class="logo-link" aria-label="Jpegers — Портфолио">
+          <img src="/assets/logo_jpegers.svg" alt="Jpegers" class="logo">
+        </a>
+      </div>
+
+      <nav class="mobile-nav">
+        <a class="mobile-nav__link" href="/">Портфолио</a>
+        <a class="mobile-nav__link" href="/price">Прайс</a>
+        <a class="mobile-nav__link" href="/contacts">Контакты</a>
+        <a class="mobile-nav__link" href="/rita">Rita</a>
+      </nav>
+      <div class="mobile-cta">
+        <a class="contact-link" href="https://t.me/jpegers" target="_blank" rel="noopener">Написать в Telegram</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <article class="policy">
+      <h1>Политика конфиденциальности и обработки персональных данных</h1>
+
+      <p>
+        Настоящая Политика конфиденциальности (далее&nbsp;— «Политика») действует в отношении сайта
+        <strong>jpegers.art</strong> (далее&nbsp;— «Сайт») и описывает порядок обработки и защиты
+        персональных данных и иной информации о пользователях Сайта.
+      </p>
+
+      <p>
+        Используя Сайт, вы подтверждаете, что внимательно ознакомились с настоящей Политикой и
+        соглашаетесь с её условиями.
+      </p>
+
+      <h2><span class="policy__section-number">1.</span>Оператор персональных данных</h2>
+
+      <p>
+        1.1. Оператором персональных данных является физическое лицо&nbsp;— владелец Сайта
+        <strong>jpegers.art</strong> (далее&nbsp;— «Оператор»).
+      </p>
+      <p>
+        1.2. Оператор самостоятельно определяет цели и состав обрабатываемых данных,
+        а также действия (операции), совершаемые с персональными данными.
+      </p>
+
+      <h2><span class="policy__section-number">2.</span>Обрабатываемые данные</h2>
+
+      <p>
+        2.1. При использовании Сайта могут автоматически обрабатываться следующие категории данных:
+      </p>
+      <ul>
+        <li>IP-адрес, приблизительное местоположение по IP-адресу;</li>
+        <li>данные о браузере и операционной системе (user-agent);</li>
+        <li>данные о модели устройства, разрешении экрана;</li>
+        <li>данные о времени посещения, просмотренных страницах, длительности сессии;</li>
+        <li>источник перехода на Сайт (поисковая система, реклама, ссылка и т.п.);</li>
+        <li>файлы cookie и идентификаторы браузера;</li>
+        <li>данные, сохраняемые в localStorage (в том числе факт согласия с использованием cookie).</li>
+      </ul>
+
+      <p>
+        2.2. На Сайте не предполагается сбор данных, позволяющих напрямую идентифицировать
+        пользователя (ФИО, паспортные данные и т.п.), за исключением случаев, когда пользователь
+        самостоятельно и по своей инициативе передаёт такую информацию Оператору по контактам,
+        указанным в разделе 9 Политики.
+      </p>
+
+      <h2><span class="policy__section-number">3.</span>Цели обработки данных</h2>
+
+      <p>3.1. Данные обрабатываются Оператором в следующих целях:</p>
+      <ul>
+        <li>анализ посещаемости и улучшение качества контента Сайта;</li>
+        <li>обеспечение корректной работы Сайта на различных устройствах и в различных браузерах;</li>
+        <li>повышение удобства использования интерфейса;</li>
+        <li>обеспечение безопасности и предотвращение злоупотреблений;</li>
+        <li>ведение статистики использования Сайта.</li>
+      </ul>
+
+      <h2><span class="policy__section-number">4.</span>Правовые основания обработки</h2>
+
+      <p>
+        4.1. Обработка данных осуществляется на основании:
+      </p>
+      <ul>
+        <li>Федерального закона РФ №&nbsp;152-ФЗ «О персональных данных»;</li>
+        <li>Федерального закона РФ №&nbsp;149-ФЗ «Об информации, информационных технологиях и о защите информации»;</li>
+        <li>согласия пользователя, выраженного через продолжение использования Сайта после ознакомления с настоящей Политикой и баннером об использовании cookie;</li>
+        <li>законных интересов Оператора по анализу и улучшению работы Сайта.</li>
+      </ul>
+
+      <h2><span class="policy__section-number">5.</span>Файлы cookie и локальное хранилище</h2>
+
+      <p>
+        5.1. На Сайте используются файлы <strong>cookie</strong>, а также технологии локального хранилища
+        браузера (<strong>localStorage</strong>) для:
+      </p>
+      <ul>
+        <li>сохранения факта согласия с использованием cookie (технический ключ <code>cookieConsent</code>);</li>
+        <li>корректной работы баннера уведомления о cookie;</li>
+        <li>аналитики посещаемости с помощью систем веб-аналитики.</li>
+      </ul>
+
+      <p>
+        5.2. Пользователь может ограничить или отключить использование cookie в настройках браузера.
+        Это может повлиять на корректность работы отдельных функций Сайта.
+      </p>
+
+      <p>
+        5.3. На Сайте реализовано визуальное уведомление о использовании cookie. Продолжая
+        пользоваться Сайтом после отображения баннера, пользователь считается выразившим согласие
+        с условиями Политики и использованием cookie в указанных выше целях.
+      </p>
+
+      <h2><span class="policy__section-number">6.</span>Системы веб-аналитики</h2>
+
+      <p>
+        6.1. Для анализа посещаемости и улучшения Сайта используется система веб-аналитики
+        <strong>Яндекс.Метрика</strong>.
+      </p>
+
+      <p>6.2. Яндекс.Метрика может собирать и обрабатывать в обезличенном виде:</p>
+      <ul>
+        <li>данные об устройствах и браузерах пользователей;</li>
+        <li>данные о поведении на страницах Сайта (просмотры, клики, прокрутки и т.п.);</li>
+        <li>техническую информацию по работе Сайта.</li>
+      </ul>
+
+      <p>
+        6.3. Подробные условия обработки данных Яндексом размещены в документах:
+        <br>
+        «Политика конфиденциальности Яндекса» —
+        <a href="https://yandex.ru/legal/confidential/" target="_blank" rel="noopener noreferrer">
+          https://yandex.ru/legal/confidential/
+        </a>
+        и «Условия использования сервиса Яндекс.Метрика».
+      </p>
+
+      <p>
+        6.4. Продолжая использование Сайта, пользователь соглашается на обработку своих данных
+        Яндексом в рамках указанных документов.
+      </p>
+
+      <h2><span class="policy__section-number">7.</span>Передача данных третьим лицам</h2>
+
+      <p>
+        7.1. Оператор не продаёт и не передаёт персональные данные третьим лицам, за исключением:
+      </p>
+      <ul>
+        <li>поставщиков технической инфраструктуры (хостинг-провайдеры, CDN-сервисы);</li>
+        <li>поставщиков аналитических сервисов (Яндекс.Метрика);</li>
+        <li>случаев, прямо предусмотренных действующим законодательством РФ.</li>
+      </ul>
+
+      <p>
+        7.2. Все такие третьи лица обрабатывают данные на основании договоров и собственных
+        политик конфиденциальности.
+      </p>
+
+      <h2><span class="policy__section-number">8.</span>Права пользователя</h2>
+
+      <p>
+        8.1. Пользователь имеет право:
+      </p>
+      <ul>
+        <li>получать информацию об обработке своих персональных данных Оператором;</li>
+        <li>требовать уточнения, блокирования или уничтожения своих персональных данных в случаях, предусмотренных законом;</li>
+        <li>отозвать своё согласие на обработку персональных данных;</li>
+        <li>обращаться с жалобой в уполномоченный орган по защите прав субъектов персональных данных.</li>
+      </ul>
+
+      <p>
+        8.2. Для реализации своих прав пользователь может связаться с Оператором по контактам,
+        указанным в разделе 9 Политики.
+      </p>
+
+      <h2><span class="policy__section-number">9.</span>Контакты Оператора</h2>
+
+      <p>
+        9.1. По вопросам, связанным с обработкой персональных данных и применением настоящей
+        Политики, пользователь может обратиться к Оператору по электронной почте:
+        <br>
+        <strong>dmitriy@jpegers.ru</strong>
+        <!-- ЗАМЕНИ на актуальный email -->
+      </p>
+
+      <h2><span class="policy__section-number">10.</span>Срок действия и обновление Политики</h2>
+
+      <p>
+        10.1. Настоящая Политика действует бессрочно до её замены новой версией.
+      </p>
+      <p>
+        10.2. Оператор вправе обновлять Политику в одностороннем порядке.
+        Актуальная версия всегда доступна по адресу:
+        <br>
+        <strong>https://jpegers.art/policy</strong> (при размещении на продакшене).
+      </p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <!-- Единый футер: ссылка на политику конфиденциальности и копирайт -->
+      <div class="footer__links">
+        <a href="/policy" target="_blank" rel="noopener noreferrer">Политика конфиденциальности</a>
+      </div>
+      <div class="footer__meta">
+        <span class="footer__muted">© Jpegers</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Автоматически подставляем текущий год в футер
+    (function () {
+      var el = document.getElementById("policy-year");
+      if (el) {
+        el.textContent = new Date().getFullYear();
+      }
+    })();
+  </script>
+  <!-- burger menu script -->
+  <script src="/js/menu.js"></script>
+</body>
+</html>

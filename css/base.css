@@ -1,0 +1,117 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html, body {
+  height: 100%;
+  /* Запрещаем горизонтальную прокрутку для всей страницы. При этом таблицы
+     со своими контейнерами по-прежнему могут прокручиваться по горизонтали,
+     так как на них действует собственный overflow-x. Это исключает появление
+     горизонтального скролла для всей страницы. */
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  background: linear-gradient(180deg, var(--c-bg-1) 0%, var(--c-bg-2) 100%) fixed;
+  background-attachment: fixed; /* КЛЮЧ!!!! */
+
+  color: var(--c-text);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, var(--c-bg-1) 0%, var(--c-bg-2) 100%);
+}
+
+/* lock scroll when case modal opened */
+body.modal-open {
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+}
+
+main {
+  flex: 1;
+  background: linear-gradient(180deg, var(--c-bg-1) 0%, var(--c-bg-2) 100%);
+  padding-bottom: 120px;
+}
+
+/* Intro screen */
+.intro-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 20% 20%, var(--c-a1-25), var(--c-ink-20410-092)),
+              radial-gradient(circle at 80% 80%, var(--c-purple-18), var(--c-ink-20410-09));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.intro-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-content {
+  text-align: center;
+  color: var(--c-text-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.intro-logo {
+  width: 128px;
+  height: auto;
+  filter: drop-shadow(0 12px 28px var(--c-black-035));
+}
+
+.intro-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.intro-progress {
+  width: 160px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--c-border);
+  overflow: hidden;
+  position: relative;
+}
+
+.intro-progress::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--c-a1-20), var(--c-purple-60), var(--c-a1-20));
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { transform: translateX(-60%); }
+  50%  { transform: translateX(15%); }
+  100% { transform: translateX(60%); }
+}

@@ -1,0 +1,193 @@
+/* ========================= */
+/*         HEADER            */
+/* ========================= */
+
+.header-blur {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  width: 100%;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background: var(--c-header-bg);
+  border-bottom: 1px solid var(--c-border);
+
+  padding: 12px 0;
+
+  transition: transform 0.25s ease;
+}
+
+.header-hidden {
+  transform: translateY(-100%);
+}
+
+.header-content {
+  /* На мобильных экранах весь контент должен занимать доступную ширину без отступов по краям. Поэтому убираем ограничение max-width
+     и фиксируем ширину в 100%. Margin по центру тоже убираем — он вызывает лишние боковые поля. */
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-link{display:inline-flex;align-items:center;gap:10px;text-decoration:none;}
+
+.logo {
+  width: 96px;
+  height: auto;
+  cursor: pointer;
+  transition: opacity .15s ease;
+}
+
+.logo:hover {
+  opacity: .8;
+}
+
+/* ========================= */
+/*       TELEGRAM BUTTON     */
+/* ========================= */
+
+.contact-link {
+  font-size: 15px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--c-accent-border);
+  color: var(--c-text-soft);
+  text-decoration: none;
+  font-weight: 500;
+
+  background: radial-gradient(circle at top left, var(--c-a1-25), transparent 55%),
+              radial-gradient(circle at bottom right, var(--c-a2-25), transparent 55%);
+
+  box-shadow: 0 0 12px var(--c-shadow-a1-28),
+              0 0 18px var(--c-a2-25);
+
+  transition: background .15s, box-shadow .2s, transform .12s;
+}
+
+.contact-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 22px var(--c-a1-45),
+              0 0 30px var(--c-a2-45);
+
+  background: radial-gradient(circle at top left, var(--c-a1-45), transparent 55%),
+              radial-gradient(circle at bottom right, var(--c-a2-45), transparent 55%);
+}
+
+/* ========================= */
+/*          FILTERS          */
+/* ========================= */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 16px 0;
+  margin-top: 16px;
+
+  /* Выравнивание фильтров по левому краю. По умолчанию justify-content
+     равен flex-start, но явное указание помогает избежать неожиданного
+     центрирования при будущих изменениях. */
+  justify-content: flex-start;
+}
+
+.filter-btn {
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border: 1px solid var(--c-accent-border-50);
+  background: transparent;
+  color: var(--c-text-soft);
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  transition: transform 0.08s, background 0.1s, box-shadow 0.08s;
+}
+
+.filter-btn span.count {
+  opacity: .75;
+  font-size: 12px;
+}
+
+/* кнопка "Все" и цветные теги
+   Ниже задаются стили для элементов фильтра на страницах портфолио и прайса.
+   Эти правила повторяют внешний вид версии v18: у фильтра "Все" белая рамка и
+   белый текст по умолчанию, а при активном состоянии он полностью заливается
+   белым цветом и имеет тёмный текст. Цветные теги имеют цветную рамку и текст,
+   а при активации заливаются соответствующим цветом с тёмным текстом. */
+
+/* Кнопка "Все" */
+.filter-btn--all {
+  /*
+     Переносим явные цвета в переменные. Белый цвет задаётся
+     через var(--c-white), тёмный — через var(--c-dark). Сохраняем
+     прозрачный фон по умолчанию.
+  */
+  border: 1px solid var(--c-white);
+  background: transparent;
+  color: var(--c-white);
+}
+
+/* Активное состояние кнопки "Все": белая заливка и тёмный текст */
+.filter-btn--all.filter-btn--active {
+  /* Активное состояние «Все»: белый фон и тёмный текст */
+  background: var(--c-white);
+  color: var(--c-dark);
+}
+
+/* Цветные теги */
+.filter-btn--color {
+  /*
+     Цветной тег: по умолчанию использует первую запись из палитры
+     (--c-tag-0). Далее цвет переопределяется атрибутом data-color-index.
+  */
+  --tag-color: var(--c-tag-0);
+  border-color: var(--tag-color);
+  background: transparent;
+  color: var(--tag-color);
+}
+
+/* Активное состояние цветного тега: заливка цветом тега и тёмный текст */
+.filter-btn--color.filter-btn--active {
+  background: var(--tag-color);
+  color: var(--c-dark);
+}
+
+/* Цветовые индексы */
+/*
+  Переносим цвета из хардкодов в colors.css: для каждого индекса
+  задаём переменную из палитры тегов. Это избавляет от дублирования
+  значений и облегчает смену палитры.
+*/
+.filter-btn--color[data-color-index="0"] { --tag-color: var(--c-tag-0); }
+.filter-btn--color[data-color-index="1"] { --tag-color: var(--c-tag-1); }
+.filter-btn--color[data-color-index="2"] { --tag-color: var(--c-tag-2); }
+.filter-btn--color[data-color-index="3"] { --tag-color: var(--c-tag-3); }
+.filter-btn--color[data-color-index="4"] { --tag-color: var(--c-tag-4); }
+.filter-btn--color[data-color-index="5"] { --tag-color: var(--c-tag-5); }
+.filter-btn--color[data-color-index="6"] { --tag-color: var(--c-tag-6); }
+
+/* ========================= */
+/*      PINTEREST GRID       */
+/*  (JS Masonry, no columns) */
+/* ========================= */
+
+.grid {
+  --grid-gap: 12px;
+
+  padding: 10px 16px 0;
+  margin-top: 24px;
+
+  /* ключ: контейнер для absolute карточек */
+  position: relative;
+}
+
+/* карточка теперь позиционируется JS'ом */

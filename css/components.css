@@ -1,0 +1,1171 @@
+.card {
+  position: absolute;
+  left: 0 auto;
+  top: 0 auto;
+
+  width: 200px; /* JS перезапишет */
+  cursor: zoom-in;
+
+  border-radius: 18px;
+  overflow: hidden;
+
+  background: radial-gradient(circle at top, var(--c-a1-035), var(--c-slate-152342-1));
+  box-shadow: 0 12px 24px var(--c-deepviolet-80);
+
+  transform: translate3d(0,0,0);
+  will-change: transform;
+
+  /* чтобы не мигало до первого layout */
+  visibility: hidden;
+}
+
+.card.is-measured {
+  visibility: visible;
+}
+
+.card-inner {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* Медиа */
+.card img,
+.card video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ========================= */
+/*     Анимация появления     */
+/*  (НЕ трогаем transform card) */
+/* ========================= */
+
+/* ВАЖНО: transform карточки занят Masonry (translate3d),
+   поэтому анимацию делаем через opacity + легкий scale на inner */
+.card.anim-start .card-inner {
+  opacity: 0;
+  transform: translateY(6px) scale(0.985);
+  animation: cardSoftAppear 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardSoftAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================= */
+/*        CASE MODAL         */
+/*  media + tags + desc +    */
+/*     recommendations       */
+/* ========================= */
+
+.casebox__index {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--c-text-75);
+
+  pointer-events: none;
+}
+
+
+.casebox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;      /* важно: НЕ центрируем по вертикали */
+  justify-content: center;
+}
+
+
+.casebox.hidden {
+  display: none;
+}
+
+.casebox__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--c-black-056);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.casebox__panel {
+  height: 100vh;
+  max-height: 100vh;
+
+  position: relative;
+  z-index: 2;
+  
+  width: min(1100px, 94vw);
+
+  /* ВАЖНО: занимаем весь экран по высоте */
+  height: 100dvh;
+  max-height: 100dvh;
+
+  /* СКРУГЛЯЕМ ТОЛЬКО ВЕРХ */
+  border-radius: 18px 18px 0 0;
+  overflow: hidden;
+
+  background: radial-gradient(circle at top, var(--c-a1-18), var(--c-ink-20410-098));
+  border: none;
+  box-shadow: none;
+
+  margin-top: 32px;
+}
+
+
+
+.casebox__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 12px;
+  background: var(--c-ink-20410-035);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.casebox__back {
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 13px;
+  border: 1px solid var(--c-slateborder-55);
+  background: var(--c-ink-20623-055);
+  color: var(--c-text-soft);
+  cursor: pointer;
+  transition: transform 0.08s, opacity 0.12s;
+}
+
+.casebox__back:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+.casebox__close {
+  border-radius: 999px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--c-slateborder-55);
+  background: var(--c-ink-20623-055);
+  color: var(--c-text-soft);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.casebox__body {
+  padding: 0 0 48px; /* ← ВАЖНО: низ */
+  overflow-y: auto;
+    height: calc(100vh - 64px);
+  height: calc(100dvh - 64px);
+
+}
+
+.casebox__panel::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    to bottom,
+    var(--c-ink-20410-0),
+    var(--c-ink-20410-09)
+  );
+}
+
+
+.casebox__tags,
+.casebox__desc,
+.casebox__reco {
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+
+
+.casebox__media {
+  border-radius: 0;     /* БЕЗ скруглений */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+
+  max-height: 78vh;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+}
+
+
+
+.casebox__img,
+.casebox__video {
+  display: block;
+
+  max-width: 100%;
+  max-height: 78vh;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+}
+
+
+/* Для длинных скроллов: изображение пусть будет "как есть", а скролл — в контейнере */
+.casebox__video {
+  display: none;
+}
+
+.casebox__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  padding-top: 12px;
+  padding-bottom: 6px;
+
+  padding-left: 16px;   /* ← нужный отступ */
+  padding-right: 16px;
+}
+
+
+.casebox__tag {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--c-slateborder-45);
+  color: var(--c-text-soft);
+  background: var(--c-ink-20623-035);
+  cursor: pointer;
+}
+
+.casebox__desc {
+  padding: 10px 2px 6px;
+}
+
+.casebox__title {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.casebox__text {
+  color: var(--c-link);
+  font-size: 14px;
+  line-height: 1.55;
+  white-space: pre-line;
+  padding: 0 12px;
+}
+
+.casebox__reco {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--c-border);
+}
+
+.casebox__reco-title {
+  font-size: 14px;
+  font-weight: 650;
+  margin: 0 0 10px 2px;
+  opacity: 0.95;
+}
+
+/* Рекомендации используют тот же Masonry JS, но с меньшим gap */
+.grid--reco {
+  --grid-gap: 10px;
+  padding: 0;
+  margin-top: 0;
+}
+
+.grid--reco .card {
+  cursor: pointer;
+}
+
+.casebox__actions {
+  display: flex;
+  justify-content: center;
+  padding: 14px 0 2px;
+}
+
+/* ========================= */
+/*          FOOTER           */
+/* ========================= */
+
+.footer{
+  padding: 26px 16px 34px;
+  text-align: center;
+  border-top: 1px solid var(--c-border);
+  background: linear-gradient(180deg, transparent 0%, var(--c-ink-20410-035) 100%);
+  color: var(--c-link-muted);
+}
+
+.footer__inner{
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.footer__links,
+.footer__meta{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  line-height: 1.35;
+}
+
+.footer__dot{
+  color: var(--c-border-strong);
+}
+
+.footer a{
+  color: var(--c-link-muted);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+.footer a:hover{
+  color: var(--c-link);
+}
+
+.footer__muted{
+  color: var(--c-link-muted);
+  text-decoration: none;
+}
+
+.footer__muted:hover{
+  text-decoration: underline dotted;
+}
+
+
+/* ========================= */
+/*   CONTACTS (COMMERCIAL)   */
+/* ========================= */
+
+.contact-main{
+  padding: 22px 20px 24px;
+  border-radius: 22px;
+  border: 1px solid var(--c-border-soft);
+  background:
+    radial-gradient(circle at top, var(--c-a1-12), transparent 55%),
+    var(--c-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 14px 48px var(--c-black-032);
+}
+
+.contact-title{
+  margin: 0 0 8px;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+  color: var(--c-text);
+}
+
+.contact-subtitle{
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--c-text-soft);
+}
+
+/* Primary CTA */
+.contact-primary{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--c-a1-35);
+  background:
+    radial-gradient(circle at top left, var(--c-a1-30), transparent 60%),
+    var(--c-a1-22);
+  color: var(--c-text);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform .12s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.contact-primary:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 0 26px var(--c-a1-35);
+  background: var(--c-a1-30);
+}
+
+/* Secondary */
+.contact-secondary{
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-secondary a{
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--c-border-strong);
+  background: var(--c-surface-glass);
+  color: var(--c-text-soft);
+  font-size: 14px;
+  text-decoration: none;
+  transition: transform .12s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.contact-secondary a:hover{
+  transform: translateY(-1px);
+  border-color: var(--c-a1-20);
+  box-shadow: 0 0 18px var(--c-a1-16);
+}
+
+.contact-note{
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--c-link-muted);
+}
+
+.contact-note a{
+  color: var(--c-link);
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+
+.contact-trust{
+  margin-top: 16px;
+  padding: 14px 6px 0;
+}
+
+.trust-title{
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--c-text-soft);
+}
+
+
+/* ========================= */
+/*         ADAPTIVE          */
+/* ========================= */
+
+
+
+
+
+
+
+/* iOS/Safari perf guard */
+@supports (-webkit-touch-callout: none) {
+  .card {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  img,
+  video {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Casebox loader (all browsers) */
+.casebox__loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--c-ink-20410-045);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.casebox__loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.casebox__spinner {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--c-white-025);
+  border-top-color: var(--c-white-09);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* Hover-эффект только для устройств с мышью */
+
+
+
+
+/* ===== TOP NAV ===== */
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  min-width:0;
+}
+
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.topnav{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  /* allow nav to occupy remaining space and center its items */
+  flex:1;
+  justify-content: center;
+}
+
+.topnav__link{
+  font-size:14px;
+  color: var(--c-text-soft);
+  text-decoration:none;
+  padding:8px 12px;
+  border:none;
+  border-radius:0;
+  background: transparent;
+  transition: transform .12s ease, color .18s ease;
+  white-space:nowrap;
+}
+
+.topnav__link:hover{
+  transform: translateY(-1px);
+  color: var(--c-text-098);
+}
+
+.topnav__link--active{
+  color: var(--c-text-098);
+}
+
+/* ===== GENERIC PAGES ===== */
+
+.page-body{
+  min-height:100vh;
+}
+
+.page{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 22px 16px 44px;
+}
+
+.page-hero{
+  padding: 10px 2px 18px;
+}
+
+.page-title{
+  margin: 0 0 10px;
+  font-size: 34px;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle{
+  margin: 0;
+  color: var(--c-text-080);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.page-card{
+  margin-top: 16px;
+  padding: 18px 16px;
+  border-radius: 18px;
+  border: 1px solid var(--c-border-soft);
+  background: var(--c-header-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 40px var(--c-black-025);
+}
+
+.page-h2{
+  margin: 0 0 14px;
+  font-size: 18px;
+  color: var(--c-text-095);
+}
+
+.page-h3{
+  margin: 18px 0 10px;
+  font-size: 16px;
+  color: var(--c-link);
+}
+
+.note-grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.note{
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--c-border-soft);
+  background: var(--c-surface-glass);
+}
+
+.note__title{
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.note__text{
+  color: var(--c-text-078);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.table-wrap{
+  width: 100%;
+  /* В таблицах допускаем только горизонтальную прокрутку: вертикальная
+     прокрутка не нужна, так как строки помещаются в пределах контейнера */
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--c-border-soft);
+}
+
+.price-table{
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+  /* Use fixed layout so columns are the same width across all category tables */
+  table-layout: fixed;
+}
+
+.price-table th,
+.price-table td{
+  padding: 12px 12px;
+  border-bottom: 1px solid var(--c-border);
+  font-size: 14px;
+}
+
+.price-table th{
+  text-align: left;
+  background: var(--c-black-026);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.price-table td{
+  color: var(--c-text-soft);
+}
+
+/*
+  Define explicit widths for price table columns. The first column (service
+  description) should be wider than the price columns to allow for longer
+  names. The remaining price columns share the remaining space equally.
+*/
+.price-table th:first-child,
+.price-table td:first-child {
+  width: 40%;
+}
+.price-table th:nth-child(n+2),
+.price-table td:nth-child(n+2) {
+  width: 20%;
+}
+
+/*
+  Responsive tweaks for the price table. On narrow screens reduce the
+  minimum width so that horizontal scrolling isn’t excessive and shrink
+  paddings and font sizes for better readability. The table remains
+  horizontally scrollable via its parent .table-wrap container.
+*/
+@media (max-width: 600px) {
+  .price-table {
+    /* На очень узких экранах уменьшаем минимальную ширину таблицы,
+       чтобы горизонтальный скролл был приемлем даже на устройствах 320px. */
+    min-width: 480px;
+  }
+  .price-table th,
+  .price-table td {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
+.price-group + .price-group{
+  margin-top: 18px;
+}
+
+.page-footnote{
+  margin-top: 14px;
+  color: var(--c-link-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.muted{ color: var(--c-link-muted); }
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--c-a1-45);
+  background: var(--c-a1b-16);
+  color: var(--c-text-095);
+  text-decoration:none;
+  font-weight: 650;
+  transition: transform .12s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
+}
+
+.btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px var(--c-a1-022);
+  background: var(--c-a1b-22);
+}
+
+.btn--ghost{
+  border-color: var(--c-border-strong);
+  background: var(--c-surface-glass);
+}
+
+.btn--ghost:hover{
+  border-color: var(--c-a1-030);
+  box-shadow: 0 0 18px var(--c-a1-016);
+}
+
+.cta-row{
+  margin-top: 14px;
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cta-row--left{ justify-content:flex-start; }
+
+.footer__inner{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items:center;
+  justify-content:center;
+}
+
+.footer__dot{
+  opacity: .35;
+}
+
+.footer--page{
+  padding: 22px 0 26px;
+}
+
+.footer__muted{
+  color: var(--c-link-muted);
+}
+
+/* ===== RITA PAGE ===== */
+
+.rita-hero{
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid var(--c-border-soft);
+  background: radial-gradient(circle at 20% 15%, var(--c-a1-18), transparent 55%),
+              radial-gradient(circle at 80% 65%, var(--c-a2-14), transparent 55%),
+              var(--c-black-020);
+  padding: 22px 16px;
+  box-shadow: 0 12px 48px var(--c-black-028);
+}
+
+.rita-bg{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  filter: blur(0px);
+  opacity: 0.9;
+}
+
+.floaty{
+  position:absolute;
+  border-radius: 999px;
+  border: 1px solid var(--c-white-012);
+  background: radial-gradient(circle at 30% 30%, var(--c-a1-25), transparent 60%),
+              radial-gradient(circle at 70% 60%, var(--c-a2-20), transparent 55%),
+              var(--c-white-002);
+  box-shadow: 0 0 24px var(--c-a1-012);
+  will-change: transform;
+  animation: floatBob 6s ease-in-out infinite;
+}
+
+.f1{ width: 220px; height: 220px; left: -60px; top: -40px; animation-duration: 7.5s; }
+.f2{ width: 160px; height: 160px; right: -40px; top: 30px; animation-duration: 6.2s; }
+.f3{ width: 260px; height: 260px; left: 18%; bottom: -120px; animation-duration: 8.4s; }
+.f4{ width: 140px; height: 140px; right: 18%; bottom: -40px; animation-duration: 5.8s; }
+.f5{ width: 120px; height: 120px; left: 58%; top: 18%; animation-duration: 6.9s; }
+
+@keyframes floatBob{
+  0%,100%{ transform: translate3d(0,0,0); }
+  50%{ transform: translate3d(0,-12px,0); }
+}
+
+.rita-content{
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+}
+
+.rita-tags{
+  margin-top: 12px;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--c-border-soft);
+  background: var(--c-black-016);
+  color: var(--c-text-soft);
+  font-size: 13px;
+}
+
+.bullets{
+  margin: 0;
+  padding-left: 18px;
+  color: var(--c-text-soft);
+  line-height: 1.65;
+}
+
+.disclaimer{
+  margin-top: 14px;
+  color: var(--c-text-58);
+  font-size: 12px;
+}
+
+/* =====================================
+   Navigation Burger & Mobile Menu
+   Implement responsive hamburger menu
+   that shows when navigation doesn't fit
+   and reveals a full-screen overlay.
+====================================== */
+
+/* Burger button hidden by default; appears on small screens */
+.burger {
+  display: none;
+  width: 28px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+.burger span,
+.burger::before,
+.burger::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--c-text-soft);
+  transition: transform .3s ease, opacity .3s ease;
+}
+.burger::before { top: 4px; }
+.burger span     { top: 11px; }
+.burger::after  { top: 18px; }
+
+/* Mobile menu overlay */
+/*
+  Настройки мобильного меню. По умолчанию оно находится вне экрана слева и
+  появляется плавно при открытии. Вместо полноэкранного перекрытия теперь
+  используется сдвигающийся блок шириной около 80% экрана. Когда меню
+  открыто, transform обнуляется. Выравнивание элементов остаётся колонкой.
+*/
+/* === mobile menu overlay ===
+   В мобильной версии меню является фиксированным оверлеем,
+   который закрывает весь экран и плавно выезжает слева с одновременным появлением (fade).
+   Убираем display:none, чтобы анимация работала, и используем opacity/pointer-events
+   для управления видимостью. */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* Принудительно растягиваем бургер-меню на всю высоту экрана. Это важно для корректного перекрытия содержимого
+     независимо от содержимого меню. */
+  height: 100vh;
+  width: 100%;
+  max-width: none;
+  z-index: 500;
+  /* Затемняем фон мобильного меню для создания эффекта отдельного экрана. Используем
+     насыщенный полупрозрачный тёмный оттенок вместо фонового цвета хедера. */
+  background: var(--c-ink-20410-09);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 80px 24px 24px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  /* Центрируем содержимое (логотип и навигацию) по горизонтали, чтобы
+     соответствовать макету бургер-меню: логотип и ссылки по центру. */
+  align-items: center;
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .35s ease, opacity .35s ease;
+}
+
+/* Открытое состояние: меню полностью видно и перекрывает контент */
+.mobile-menu.open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  /* Выравниваем навигационные ссылки по центру в мобильном меню */
+  align-items: center;
+}
+
+.mobile-nav a {
+  font-size: 18px;
+  color: var(--c-text);
+  text-decoration: none;
+  /* Центрируем текст в мобильном меню */
+  text-align: center;
+}
+
+.mobile-nav a:hover {
+  color: var(--c-text-098);
+}
+
+/* CTA inside mobile menu sits at bottom */
+.mobile-cta {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.mobile-cta .contact-link {
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 260px;
+}
+
+/* Reveal burger and hide nav on smaller widths */
+@media (max-width: 820px) {
+  .topnav {
+    display: none;
+  }
+  .burger {
+    display: inline-block;
+  }
+
+  /* Прячем логотип в шапке на маленьких экранах — он находится внутри
+     выдвижного меню */
+  .logo-link {
+    display: none;
+  }
+}
+
+/* Hide mobile menu overlay on large widths */
+@media (min-width: 821px) {
+  .mobile-menu {
+    display: none !important;
+  }
+}
+
+/* =====================================
+   Price table tweaks
+   Align cells to top for better readability
+====================================== */
+.price-table th,
+.price-table td {
+  vertical-align: top;
+  text-align: left;
+}
+
+/* =====================================
+   Footer tweaks
+   Slightly reduce font sizes in footer
+====================================== */
+.footer,
+.footer a,
+.footer__muted {
+  font-size: 13px;
+}
+
+/* =====================================
+   Contacts page adjustments
+   More like a link-in-bio style: center align
+   primary button full width and secondary
+   links stacked vertically.
+====================================== */
+.contact-main {
+  text-align: center;
+}
+
+.contact-primary {
+  display: inline-flex;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+.contact-secondary {
+  flex-direction: column;
+  align-items: center;
+}
+
+.contact-secondary a {
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+}
+
+/* ===== RESPONSIVE ===== */
+
+/*
+  Social links block styles
+  The block under "Я в соцсетях" contains a row of buttons linking to
+  various social media. These buttons now appear more polished and maintain
+  their colour regardless of whether a link has been visited. Each link is
+  styled like a pill-button with a subtle glass background and a consistent
+  colour across hover and visited states.
+*/
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  /* Выравниваем кнопки соцсетей по левому краю, чтобы они начинались
+     от той же линии, что и текст. */
+  justify-content: flex-start;
+  margin-top: 12px;
+}
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--c-border);
+  background: var(--c-surface-glass);
+  color: var(--c-text);
+  text-decoration: none;
+  font-size: 14px;
+  transition: background .15s ease, transform .15s ease, color .15s ease;
+}
+.social-links a:hover {
+  transform: translateY(-2px);
+  background: var(--c-a1b-16);
+  color: var(--c-text);
+}
+.social-links a:visited {
+  color: var(--c-text);
+}
+
+/*
+  Burger animation
+  When the burger menu is opened, transform the three lines into a cross
+  for a clear close icon. The middle line fades out and the top/bottom
+  lines rotate accordingly.
+*/
+.burger.open::before {
+  transform: translateY(7px) rotate(45deg);
+  /* При открытом меню перекрашиваем линии в более яркий цвет,
+     чтобы крестик был чётко виден на тёмном фоне */
+  background: var(--c-text);
+}
+.burger.open::after {
+  transform: translateY(-7px) rotate(-45deg);
+  /* При открытом меню перекрашиваем линии в более яркий цвет */
+  background: var(--c-text);
+}
+.burger.open span {
+  opacity: 0;
+}
+
+/* =====================================
+   Расстановка элементов в блоке header-right
+   На мобильных экранах бургер должен располагаться слева от кнопки связи,
+   поэтому используем flex и порядок элементов. На больших экранах бургер
+   скрыт, поэтому правило не влияет.
+*/
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-right .burger {
+  /* Располагаем бургер перед другими элементами внутри контейнера */
+  order: -1;
+}
+
+/* Логотип внутри мобильного меню. Находится в верхней части выдвижной панели. */
+.mobile-logo {
+  width: 100%;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mobile-logo .logo {
+  width: 96px;
+  height: auto;
+}

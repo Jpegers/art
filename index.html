@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ru" data-theme="default">
+<head>
+  <meta charset="utf-8">
+  <title>Портфолио — Jpegers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/colors.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/mobile.css">
+<link rel="canonical" href="https://jpegers.art/">
+  <link rel="preconnect" href="https://pub-3bc4f2b4686e4f2da3620e629a5a1aae.r2.dev" crossorigin>
+<!-- Favicon -->
+  <link rel="icon" href="./assets/favicon.svg">
+
+  <!-- SEO -->
+  <meta name="description" content="Портфолио Jpegers — графический дизайн, постеры, визитки, полиграфия.">
+  <meta name="keywords" content="дизайн, графический дизайнер, jpegers, постеры, визитки, полиграфия, портфолио">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Портфолио — Jpegers">
+  <meta property="og:description" content="Графический дизайнер. Современные работы, постеры, визитки, иллюстрации.">
+  <meta property="og:image" content="https://jpegers.art/assets/og.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://jpegers.art">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Портфолио — Jpegers">
+  <meta name="twitter:description" content="Графический дизайнер. Постеры, визитки, стильные проекты.">
+  <meta name="twitter:image" content="https://jpegers.art/assets/og.jpg">
+
+  <!-- Yandex.Metrika -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(101729824, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+    });
+  </script>
+
+  <noscript><div><img src="https://mc.yandex.ru/watch/101729824" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+</head>
+
+<body>
+  <div id="intro-screen" class="intro-screen">
+    <div class="intro-content">
+      <img src="/assets/logo_jpegers.svg" alt="Jpegers" class="intro-logo">
+      <div class="intro-title">Загружаю лучшие работы…</div>
+      <div class="intro-progress"></div>
+    </div>
+  </div>
+
+    <!-- HEADER -->
+  <header class="header-blur">
+    <div class="header-content">
+      <a href="/" class="logo-link" id="logo-link" aria-label="Jpegers — Портфолио">
+        <img src="/assets/logo_jpegers.svg" alt="Jpegers" class="logo">
+      </a>
+      <nav class="topnav" aria-label="Навигация">
+        <a class="topnav__link topnav__link--active" href="/">Портфолио</a>
+        <a class="topnav__link" href="/price">Прайс</a>
+        <a class="topnav__link" href="/contacts">Контакты</a>
+        <a class="topnav__link" href="/rita">Rita</a>
+      </nav>
+      <div class="header-right">
+        <a class="contact-link" href="https://t.me/jpegers" target="_blank" rel="noopener">Написать в Telegram</a>
+        <button class="burger" type="button" aria-label="Меню"><span></span></button>
+      </div>
+    </div>
+    <div class="mobile-menu">
+      <!-- Логотип в мобильном меню -->
+      <div class="mobile-logo">
+        <a href="/" class="logo-link" aria-label="Jpegers — Портфолио">
+          <img src="/assets/logo_jpegers.svg" alt="Jpegers" class="logo">
+        </a>
+      </div>
+
+      <nav class="mobile-nav">
+        <a class="mobile-nav__link topnav__link--active" href="/">Портфолио</a>
+        <a class="mobile-nav__link" href="/price">Прайс</a>
+        <a class="mobile-nav__link" href="/contacts">Контакты</a>
+        <a class="mobile-nav__link" href="/rita">Rita</a>
+      </nav>
+      <div class="mobile-cta">
+        <a class="contact-link" href="https://t.me/jpegers" target="_blank" rel="noopener">Написать в Telegram</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- FILTERS -->
+  <nav id="filters" class="filters"></nav>
+
+  <!-- GRID -->
+  <main>
+    <div id="grid" class="grid"></div>
+  </main>
+
+    <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <!-- Единый футер: ссылка на политику конфиденциальности и копирайт -->
+      <div class="footer__links">
+        <a href="/policy" target="_blank" rel="noopener noreferrer">Политика конфиденциальности</a>
+      </div>
+      <div class="footer__meta">
+        <span class="footer__muted">© Jpegers</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CASE VIEW (Modal) -->
+  <div id="casebox" class="casebox hidden" aria-hidden="true">
+    <div id="casebox-overlay" class="casebox__overlay"></div>
+
+    <section class="casebox__panel" role="dialog" aria-modal="true" aria-label="Просмотр проекта">
+      <header class="casebox__header">
+        <button id="casebox-back-top" class="casebox__back" type="button">
+          ← Вернуться назад
+        </button>
+
+        <div id="casebox-index" class="casebox__index"></div>
+      </header>
+
+      <div class="casebox__body">
+        <!-- Media -->
+        <div class="casebox__media">
+          <img id="casebox-img" class="casebox__img" alt="">
+          <video id="casebox-video" class="casebox__video" playsinline muted loop preload="metadata"></video>
+          <div class="casebox__loader" id="casebox-loader">
+            <div class="casebox__spinner"></div>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div id="casebox-tags" class="casebox__tags"></div>
+
+        <!-- Description -->
+        <div class="casebox__desc">
+          <div id="casebox-text" class="casebox__text"></div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="casebox__reco">
+          <div class="casebox__reco-title">Похожие работы:</div>
+          <div id="reco-grid" class="grid grid--reco"></div>
+
+          <div class="casebox__actions">
+            <button id="casebox-back-bottom" class="casebox__back" type="button">← Вернуться назад</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script type="module" src="/js/app.js"></script>
+  <script src="/js/menu.js"></script>
+</body>
+
+<!-- Cookies -->
+<script src="/js/cookies.js"></script>
+</html>
