@@ -1344,34 +1344,31 @@
   position: relative;
 }
 
-/* ===== Tooltip overlay (рисуется в body) ===== */
-.tooltip-popover {
-  position: fixed;
-  z-index: 5000;
-  max-width: 320px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: rgba(12, 16, 22, 0.96);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  box-shadow: 0 18px 60px rgba(0,0,0,0.55);
-  color: var(--c-text);
-  font-size: 13px;
-  line-height: 1.45;
-  pointer-events: none; /* чтобы не мешал ховеру */
-  backdrop-filter: blur(8px);
-}
-
-
 /*
   При наведении на знак вопроса выводим подсказку. Используем атрибут
   data-tip для текста. Располагаем подсказку сверху по центру и
   ограничиваем максимальную ширину, чтобы длинные комментарии читались.
 */
-/* Отключаем старый tooltip через псевдоэлемент */
-.info-icon[data-tip]::after {
-  content: none !important;
+.info-icon[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  /* Повышаем z-index, чтобы всплывающая подсказка перекрывала
+     таблицы и соседние элементы. */
+  z-index: 200;
+  padding: 6px 10px;
+  max-width: 260px;
+  white-space: normal;
+  background: var(--c-ink-20623-055);
+  color: var(--c-text-soft);
+  border: 1px solid var(--c-slateborder-45);
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  box-shadow: 0 4px 8px var(--c-black-06);
 }
-
 
 /* =====================================
    Subtle outline on media cards
