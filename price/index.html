@@ -365,6 +365,12 @@
         thead.innerHTML = '<tr><th>Услуга</th><th>Базовый</th><th>Расширенный</th><th>Индивидуально</th></tr>';
         table.appendChild(thead);
         const tbody = document.createElement('tbody');
+        // Определяем цветовой индекс для секции. Используем позицию
+        // секции в массиве sections, чтобы синхронизировать цвета с
+        // кнопками фильтров. Всего предусмотрено 7 различных цветов,
+        // индексы цикличны (0–6).
+        const colorIndex = sections.indexOf(section) % 7;
+
         (groups[section] || []).forEach(row => {
           const tr = document.createElement('tr');
           const td0 = document.createElement('td');
@@ -382,6 +388,10 @@
               составлены в свободной форме, чтобы звучать естественно.
             */
             icon.dataset.tip = row.comment;
+            // Сохраняем индекс цвета, чтобы CSS мог применить
+            // соответствующий оттенок (var(--c-tag-X)) для обводки
+            // и текста иконки.
+            icon.dataset.colorIndex = colorIndex;
             td0.appendChild(icon);
           }
           const td1 = document.createElement('td');
@@ -432,6 +442,121 @@
       const firstBtn = filtersEl.querySelector('.filter-btn');
       if (firstBtn) firstBtn.classList.add('filter-btn--active');
     });
+  </script>
+
+  <!-- Tooltip overlay logic: выводит описание услуг поверх таблицы и поддерживает
+       как desktop hover, так и mobile click с автозакрытием. -->
+  <script>
+    (function() {
+      let tipEl = null;
+      let currentIcon = null;
+      let hideTimeout;
+
+      function removeTip() {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+        if (tipEl) {
+          tipEl.remove();
+          tipEl = null;
+          currentIcon = null;
+        }
+      }
+
+      function createTip(text) {
+        const el = document.createElement('div');
+        el.className = 'tooltip-popover';
+        el.textContent = text;
+        document.body.appendChild(el);
+        return el;
+      }
+
+      function positionTip(icon) {
+        if (!tipEl || !icon) return;
+        const r = icon.getBoundingClientRect();
+        const pad = 10;
+        const gap = 8;
+        // reset to get natural width/height
+        tipEl.style.left = '0px';
+        tipEl.style.top = '0px';
+        const w = tipEl.offsetWidth;
+        const h = tipEl.offsetHeight;
+        // Default show above icon
+        let top = r.top - h - gap;
+        // If not enough space above, place below
+        if (top < pad) {
+          top = r.bottom + gap;
+        }
+        // Ensure within viewport
+        if (top + h > window.innerHeight - pad) {
+          top = Math.max(pad, window.innerHeight - h - pad);
+        }
+        // Horizontal center relative to icon
+        let left = r.left + r.width / 2 - w / 2;
+        if (left < pad) left = pad;
+        if (left + w > window.innerWidth - pad) {
+          left = window.innerWidth - w - pad;
+        }
+        tipEl.style.left = `${left}px`;
+        tipEl.style.top = `${top}px`;
+      }
+
+      function showTip(icon) {
+        const text = icon?.dataset?.tip;
+        if (!text) return;
+        // If clicking on the same icon again, just reposition
+        if (tipEl && currentIcon === icon) {
+          positionTip(icon);
+          return;
+        }
+        removeTip();
+        tipEl = createTip(text);
+        currentIcon = icon;
+        positionTip(icon);
+      }
+
+      // Desktop: show on hover
+      document.addEventListener('mouseenter', function(e) {
+        const icon = e.target.closest && e.target.closest('.info-icon');
+        if (!icon) return;
+        // Ignore hover on touch devices
+        if ('ontouchstart' in window) return;
+        showTip(icon);
+      }, true);
+      document.addEventListener('mouseleave', function(e) {
+        const icon = e.target.closest && e.target.closest('.info-icon');
+        if (!icon) return;
+        if ('ontouchstart' in window) return;
+        removeTip();
+      }, true);
+
+      // Mobile & Desktop: show on click
+      document.addEventListener('click', function(e) {
+        const icon = e.target.closest && e.target.closest('.info-icon');
+        if (icon) {
+          showTip(icon);
+          // Auto-hide after 15 seconds on mobile or desktop click
+          if (hideTimeout) clearTimeout(hideTimeout);
+          hideTimeout = setTimeout(removeTip, 15000);
+        } else {
+          // Clicked outside: close if open
+          if (tipEl) {
+            removeTip();
+          }
+        }
+      }, true);
+
+      // Reposition on scroll: attach capture to ensure runs early
+      window.addEventListener('scroll', function() {
+        if (tipEl && currentIcon) {
+          positionTip(currentIcon);
+        }
+      }, true);
+      window.addEventListener('resize', function() {
+        removeTip();
+      });
+    })();
   </script>
 
 </body>
