@@ -405,9 +405,11 @@
 .footer__inner{
   max-width: 1100px;
   margin: 0 auto;
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  justify-items: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .footer__links,
@@ -621,12 +623,6 @@
   align-items:center;
   gap:18px;
   min-width:0;
-}
-
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:12px;
 }
 
 .topnav{
@@ -944,13 +940,6 @@
 
 .cta-row--left{ justify-content:flex-start; }
 
-.footer__inner{
-  display:flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items:center;
-  justify-content:center;
-}
 
 .footer__dot{
   opacity: .35;
@@ -958,10 +947,6 @@
 
 .footer--page{
   padding: 22px 0 26px;
-}
-
-.footer__muted{
-  color: var(--c-link-muted);
 }
 
 /* ===== RITA PAGE ===== */
