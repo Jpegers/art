@@ -186,13 +186,19 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 56px;
+  /* Increase the gradient height to make the modal’s end more pronounced */
+  height: 96px;
 
   pointer-events: none;
 
+  /*
+    Provide a smoother fade out at the bottom of the modal. The gradient now
+    transitions through a mid‑opacity stop before reaching the darker shade.
+  */
   background: linear-gradient(
     to bottom,
     var(--c-ink-20410-0),
+    var(--c-ink-20410-035),
     var(--c-ink-20410-09)
   );
 }
@@ -1138,6 +1144,22 @@
 }
 .burger.open span {
   opacity: 0;
+}
+
+/*
+  When the mobile menu is open the burger transforms into a close (×) icon. To make
+  it accessible while the overlay is displayed, we position the button
+  fixed in the top‑right corner of the viewport on small screens. This ensures
+  the close control stays visible above the menu panel and occupies the same
+  approximate location as the original burger button.
+*/
+@media (max-width: 820px) {
+  .burger.open {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
 }
 
 /* =====================================

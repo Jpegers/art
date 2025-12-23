@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/css/components.css">
   <link rel="stylesheet" href="/css/mobile.css">
 <link rel="canonical" href="https://jpegers.art/price">
-<link rel="icon" href="./assets/favicon.svg">
+<link rel="icon" href="/assets/favicon.svg">
 
   <meta name="description" content="Jpegers — дизайн и визуальные проекты.">
   <meta property="og:title" content="Прайс — Jpegers">
@@ -83,6 +83,8 @@
       <h2 class="page-h2">Услуги и стоимость</h2>
       <!-- Фильтр категорий: позволяет выбирать группы услуг -->
       <nav id="price-filters" class="filters"></nav>
+      <!-- Контейнер для динамически сгенерированных групп цен -->
+      <div id="price-groups"></div>
 
       <div class="price-group" data-category="poly">
         <h3 class="page-h3">Полиграфия и печать</h3>
@@ -213,6 +215,8 @@
     <script>
     // Логика фильтрации на странице прайса
     document.addEventListener('DOMContentLoaded', function() {
+      // Disable original filtering logic since we rebuild it dynamically.
+      return;
       const filtersEl = document.getElementById('price-filters');
       if (!filtersEl) return;
       const priceGroups = Array.from(document.querySelectorAll('.price-group'));
@@ -293,6 +297,124 @@
     });
   </script>
   <script src="/js/cookies.js"></script>
+  <!-- Dynamically build the price groups and filters from the local CSV -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      const filtersEl = document.getElementById('price-filters');
+      const container = document.getElementById('price-groups');
+      if (!filtersEl || !container) return;
+      // Hide any existing hard‑coded groups
+      document.querySelectorAll('.price-group:not([data-dynamic])').forEach(g => {
+        g.style.display = 'none';
+      });
+      const groups = {};
+      try {
+        const resp = await fetch('/price/data.csv');
+        const text = await resp.text();
+        const lines = text.trim().split(/\r?\n/);
+        for (let i = 0; i < lines.length; i++) {
+          const parts = lines[i].split(';');
+          if (!parts || parts.length < 5) continue;
+          let section = parts[0].trim();
+          // Skip header rows and empty sections
+          if (!section || /^(section|раздел)$/i.test(section) || section.startsWith('﻿section')) continue;
+          const service = (parts[1] || '').trim();
+          if (!service || /^(услуга|service)$/i.test(service)) continue;
+          const baseVal = (parts[2] || '').trim();
+          const extVal  = (parts[3] || '').trim();
+          const indVal  = (parts[4] || '').trim();
+          if (!groups[section]) groups[section] = [];
+          groups[section].push({ service, base: baseVal, extended: extVal, individual: indVal });
+        }
+      } catch (err) {
+        console.error('Failed to load data.csv', err);
+      }
+      function formatPrice(val) {
+        if (!val) return '';
+        val = val.trim();
+        let prefix = '';
+        let numStr = val;
+        if (/^от/i.test(val)) {
+          prefix = 'от ';
+          numStr = val.replace(/^от\s*/i, '');
+        }
+        const digits = numStr.replace(/\s+/g, '');
+        if (!/^\d+$/.test(digits)) {
+          return val;
+        }
+        const formatted = digits.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ') + ' ₽';
+        return prefix + formatted;
+      }
+      const sections = Object.keys(groups);
+      sections.forEach(section => {
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'price-group';
+        groupDiv.dataset.dynamic = 'true';
+        const h3 = document.createElement('h3');
+        h3.className = 'page-h3';
+        h3.textContent = section;
+        groupDiv.appendChild(h3);
+        const wrap = document.createElement('div');
+        wrap.className = 'table-wrap';
+        const table = document.createElement('table');
+        table.className = 'price-table';
+        const thead = document.createElement('thead');
+        thead.innerHTML = '<tr><th>Услуга</th><th>Базовый</th><th>Расширенный</th><th>Индивидуально</th></tr>';
+        table.appendChild(thead);
+        const tbody = document.createElement('tbody');
+        (groups[section] || []).forEach(row => {
+          const tr = document.createElement('tr');
+          const td0 = document.createElement('td');
+          td0.textContent = row.service;
+          const td1 = document.createElement('td');
+          td1.textContent = formatPrice(row.base);
+          const td2 = document.createElement('td');
+          td2.textContent = formatPrice(row.extended);
+          const td3 = document.createElement('td');
+          td3.textContent = formatPrice(row.individual);
+          tr.appendChild(td0);
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          tr.appendChild(td3);
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        wrap.appendChild(table);
+        groupDiv.appendChild(wrap);
+        container.appendChild(groupDiv);
+      });
+      const labels = ['Все', ...sections];
+      labels.forEach((label, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        if (idx === 0) {
+          btn.classList.add('filter-btn--all');
+        } else {
+          btn.classList.add('filter-btn--color');
+          btn.dataset.colorIndex = (idx - 1) % 7;
+        }
+        btn.dataset.label = label;
+        btn.textContent = label;
+        btn.addEventListener('click', () => {
+          const groupsEls = container.querySelectorAll('.price-group[data-dynamic]');
+          groupsEls.forEach(group => {
+            const heading = group.querySelector('h3')?.textContent.trim();
+            if (label === 'Все' || heading === label) {
+              group.style.display = '';
+            } else {
+              group.style.display = 'none';
+            }
+          });
+          filtersEl.querySelectorAll('.filter-btn').forEach(b => {
+            b.classList.toggle('filter-btn--active', b.dataset.label === label);
+          });
+        });
+        filtersEl.appendChild(btn);
+      });
+      const firstBtn = filtersEl.querySelector('.filter-btn');
+      if (firstBtn) firstBtn.classList.add('filter-btn--active');
+    });
+  </script>
 
 </body>
 </html>
