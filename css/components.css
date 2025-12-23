@@ -36,6 +36,17 @@
   height: auto;
 }
 
+/*
+  Предпросмотр карточек в сетке. Чтобы снизить излишний контраст,
+  слегка уменьшаем яркость и насыщенность изображений и видео. Этот
+  фильтр применяется только в превью (grid), не влияет на полноразмерный
+  просмотр в модальном окне.
+*/
+.grid .card img,
+.grid .card video {
+  filter: brightness(0.95) saturate(0.95);
+}
+
 /* ========================= */
 /*     Анимация появления     */
 /*  (НЕ трогаем transform card) */
@@ -173,9 +184,15 @@
 }
 
 .casebox__body {
-  padding: 0 0 48px; /* ← ВАЖНО: низ */
+  /*
+    Увеличиваем нижний внутренний отступ, чтобы при прокрутке в модальном
+    окне контент не упирался в нижний край. Это позволяет увидеть
+    скругления и градиент в конце как на десктопе, так и на мобильных
+    устройствах.
+  */
+  padding: 0 0 96px;
   overflow-y: auto;
-    height: calc(100vh - 64px);
+  height: calc(100vh - 64px);
   height: calc(100dvh - 64px);
 
 }
@@ -304,6 +321,56 @@
   font-weight: 650;
   margin: 0 0 10px 2px;
   opacity: 0.95;
+}
+
+/*
+  Продающий CTA внутри модального окна. Используется, чтобы мотивировать
+  пользователя перейти к обсуждению своей задачи после просмотра работы.
+*/
+.casebox__cta {
+  margin: 12px 0px;
+  /* Добавляем вертикальные отступы, чтобы CTA не прилегал вплотную
+     к соседним элементам. Придаёт блоку воздуха сверху и снизу. */
+  padding: 16px 16px;
+  text-align: center;
+}
+
+.casebox__cta-text {
+  margin: 0 0 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--c-text-soft);
+}
+
+.casebox__cta-btn {
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 999px;
+  background: var(--c-a2-25);
+  color: var(--c-ink-0);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.08s, opacity 0.12s;
+}
+.casebox__cta-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+/*
+  Встроенные ссылки в текстах (например, в CTA в модальном окне). Обеспечиваем
+  подсветку и подчёркивание по наведению.
+*/
+.link-inline {
+  color: var(--c-link);
+  text-decoration: underline;
+  transition: opacity 0.12s;
+}
+.link-inline:hover {
+  opacity: 0.85;
 }
 
 /* Рекомендации используют тот же Masonry JS, но с меньшим gap */
@@ -673,8 +740,11 @@
   width: 100%;
   /* В таблицах допускаем только горизонтальную прокрутку: вертикальная
      прокрутка не нужна, так как строки помещаются в пределах контейнера */
+  /* Разрешаем вертикальный overflow, чтобы всплывающие подсказки
+     (описание услуг) не скрывались внутри блока таблицы. 
+     Горизонтальный скролл остаётся доступным. */
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   border-radius: 14px;
   border: 1px solid var(--c-border-soft);
 }
@@ -703,7 +773,8 @@
 }
 
 .price-table td{
-  color: var(--c-text-soft);
+  /* Используем основной текстовый цвет для более высокого контраста */
+  color: var(--c-text);
 }
 
 /*
@@ -751,6 +822,58 @@
 }
 
 .muted{ color: var(--c-link-muted); }
+
+/*
+  Краткая продающая строка, которая располагается над прайсом и помогает
+  ориентировать клиента. Используем мягкий цвет и ограничиваем ширину,
+  чтобы текст выглядел аккуратно.
+*/
+.price-note {
+  margin-top: 4px;
+  margin-bottom: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-text-soft);
+  max-width: 720px;
+}
+
+/*
+  Список шагов, описывающих процесс работы. Используем нумерованный список
+  без стандартных отступов браузера и добавляем индивидуальный стиль
+  пунктам. Подчеркиваем ключевые слова жирным началом и добавляем
+  вертикальные интервалы.
+*/
+.process-list {
+  margin: 12px 0 0 18px;
+  padding: 0;
+  counter-reset: step;
+  list-style: none;
+  max-width: 720px;
+}
+
+.process-list li {
+  position: relative;
+  margin-bottom: 12px;
+  padding-left: 26px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-text-soft);
+}
+
+.process-list li strong {
+  color: var(--c-text);
+  font-weight: 600;
+}
+
+.process-list li::before {
+  counter-increment: step;
+  content: counter(step) ".";
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: 600;
+  color: var(--c-a1-45);
+}
 
 .btn{
   display:inline-flex;
@@ -1156,8 +1279,9 @@
 @media (max-width: 820px) {
   .burger.open {
     position: fixed;
+    /* Располагаем крестик на месте исходного бургера — по левой стороне */
     top: 20px;
-    right: 20px;
+    left: 20px;
     z-index: 1000;
   }
 }
@@ -1190,4 +1314,67 @@
 .mobile-logo .logo {
   width: 96px;
   height: auto;
+}
+
+/* =====================================
+   Info icon for price tooltips
+   Маленький круглый знак вопроса, который отображает подсказку
+   через атрибут title. Используется рядом с названием услуги.
+*/
+/*
+  Круглая иконка с вопросительным знаком для прайса. Используется рядом с
+  названием услуги и содержит всплывающую подсказку. Размеры выставлены
+  небольшими, чтобы не отвлекать от текста. Position: relative для
+  размещения подсказки через ::after.
+*/
+.info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--c-a1-22);
+  color: var(--c-dark);
+  font-size: 12px;
+  line-height: 16px;
+  text-align: center;
+  cursor: default;
+  position: relative;
+}
+
+/*
+  При наведении на знак вопроса выводим подсказку. Используем атрибут
+  data-tip для текста. Располагаем подсказку сверху по центру и
+  ограничиваем максимальную ширину, чтобы длинные комментарии читались.
+*/
+.info-icon[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  /* Повышаем z-index, чтобы всплывающая подсказка перекрывала
+     таблицы и соседние элементы. */
+  z-index: 200;
+  padding: 6px 10px;
+  max-width: 260px;
+  white-space: normal;
+  background: var(--c-ink-20623-055);
+  color: var(--c-text-soft);
+  border: 1px solid var(--c-slateborder-45);
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.45;
+  box-shadow: 0 4px 8px var(--c-black-06);
+}
+
+/* =====================================
+   Subtle outline on media cards
+   Добавляем еле заметный контур, чтобы границы карточек были видны
+*/
+.card {
+  border: 1px solid var(--c-black-025);
+  box-shadow: 0 12px 24px var(--c-deepviolet-80), 0 0 0 1px var(--c-black-035);
 }

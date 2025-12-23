@@ -81,6 +81,8 @@
 
     <section class="page-card">
       <h2 class="page-h2">Услуги и стоимость</h2>
+      <!-- Продающая подпись над прайсом -->
+      <p class="price-note">Если не уверены в формате — подскажу оптимальный вариант под задачу и бюджет.</p>
       <!-- Фильтр категорий: позволяет выбирать группы услуг -->
       <nav id="price-filters" class="filters"></nav>
       <!-- Контейнер для динамически сгенерированных групп цен -->
@@ -323,8 +325,9 @@
           const baseVal = (parts[2] || '').trim();
           const extVal  = (parts[3] || '').trim();
           const indVal  = (parts[4] || '').trim();
+          const comment = (parts[5] || '').trim();
           if (!groups[section]) groups[section] = [];
-          groups[section].push({ service, base: baseVal, extended: extVal, individual: indVal });
+          groups[section].push({ service, base: baseVal, extended: extVal, individual: indVal, comment });
         }
       } catch (err) {
         console.error('Failed to load data.csv', err);
@@ -365,7 +368,22 @@
         (groups[section] || []).forEach(row => {
           const tr = document.createElement('tr');
           const td0 = document.createElement('td');
-          td0.textContent = row.service;
+          // Вставляем название услуги и иконку с подсказкой
+          const nameSpan = document.createElement('span');
+          nameSpan.textContent = row.service;
+          td0.appendChild(nameSpan);
+          if (row.comment) {
+            const icon = document.createElement('span');
+            icon.className = 'info-icon';
+            icon.textContent = '?';
+            /*
+              Подсказка теперь отображает комментарий полностью без
+              добавления префикса. Комментарии в CSV должны быть
+              составлены в свободной форме, чтобы звучать естественно.
+            */
+            icon.dataset.tip = row.comment;
+            td0.appendChild(icon);
+          }
           const td1 = document.createElement('td');
           td1.textContent = formatPrice(row.base);
           const td2 = document.createElement('td');
