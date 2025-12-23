@@ -1327,6 +1327,16 @@
   небольшими, чтобы не отвлекать от текста. Position: relative для
   размещения подсказки через ::after.
 */
+/*
+  Иконка для всплывающего описания услуги. Теперь она представляет
+  собой только обводку, цвет которой соответствует цвету фильтра
+  соответствующей категории. Основной цвет задаётся через
+  CSS‑переменную --info-color (см. ниже), которая динамически
+  устанавливается либо через data-color-index, либо принимает
+  значение акцента по умолчанию. Текст вопросительного знака
+  использует тот же цвет. Фон прозрачный, чтобы создать
+  эффект «пустого круга».
+*/
 .info-icon {
   display: inline-flex;
   align-items: center;
@@ -1335,8 +1345,11 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--c-a1-22);
-  color: var(--c-dark);
+  /* Цвет обводки и текста берётся из переменной --info-color.
+     Если не определена, используется акцентный цвет а2-45. */
+  border: 1px solid var(--info-color, var(--c-a2-45));
+  background: transparent;
+  color: var(--info-color, var(--c-a2-45));
   font-size: 12px;
   line-height: 16px;
   text-align: center;
@@ -1345,29 +1358,55 @@
 }
 
 /*
+  Устанавливаем переменную --info-color для каждой категории
+  по индексу, аналогично палитре цветов фильтров. Это позволяет
+  иконкам автоматически наследовать нужный оттенок обводки и текста.
+*/
+.info-icon[data-color-index="0"] { --info-color: var(--c-tag-0); }
+.info-icon[data-color-index="1"] { --info-color: var(--c-tag-1); }
+.info-icon[data-color-index="2"] { --info-color: var(--c-tag-2); }
+.info-icon[data-color-index="3"] { --info-color: var(--c-tag-3); }
+.info-icon[data-color-index="4"] { --info-color: var(--c-tag-4); }
+.info-icon[data-color-index="5"] { --info-color: var(--c-tag-5); }
+.info-icon[data-color-index="6"] { --info-color: var(--c-tag-6); }
+
+/*
+  Tooltip popover: всплывающая подсказка с описанием услуги.
+  Создаётся через JS и вставляется в document.body, чтобы
+  обрезание по границе таблицы не происходило. Используем
+  фиксированное позиционирование, высокий z-index и плавный фон.
+*/
+.tooltip-popover {
+  position: fixed;
+  z-index: 5000;
+  max-width: 320px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.95);
+  color: var(--c-text);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+  font-size: 13px;
+  line-height: 1.45;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  /* Гладкий переход при появлении/исчезновении. JS может
+     управлять opacity для fade‑in/out (но здесь по умолчанию 1). */
+  transition: opacity 0.12s ease-out;
+}
+
+/*
   При наведении на знак вопроса выводим подсказку. Используем атрибут
   data-tip для текста. Располагаем подсказку сверху по центру и
   ограничиваем максимальную ширину, чтобы длинные комментарии читались.
 */
-.info-icon[data-tip]:hover::after {
-  content: attr(data-tip);
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  /* Повышаем z-index, чтобы всплывающая подсказка перекрывала
-     таблицы и соседние элементы. */
-  z-index: 200;
-  padding: 6px 10px;
-  max-width: 260px;
-  white-space: normal;
-  background: var(--c-ink-20623-055);
-  color: var(--c-text-soft);
-  border: 1px solid var(--c-slateborder-45);
-  border-radius: 8px;
-  font-size: 12px;
-  line-height: 1.45;
-  box-shadow: 0 4px 8px var(--c-black-06);
+/*
+  Скрываем стандартный псевдоэлемент ::after для всплывающих
+  подсказок. Подсказки теперь выводятся через JS‑оверлей, см.
+  price/index.html. Отключаем content, чтобы ::after не создавался.
+*/
+.info-icon[data-tip]::after {
+  content: none !important;
 }
 
 /* =====================================
